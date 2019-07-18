@@ -1,0 +1,31 @@
+{
+  "name": "ant-messenger",
+  "version": "0.0.1",
+  "description": "AntMessenger: small but poweful framework for facebook messenger bots.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xeelley/AntMessenger.git"
+  },
+  "keywords": [
+    "messenger",
+    "bot",
+    "bots"
+  ],
+  "author": "Xeelley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Xeelley/AntMessenger/issues"
+  },
+  "homepage": "https://github.com/Xeelley/AntMessenger#readme",
+  "dependencies": {
+    "fb-messenger-bot-api": "^4.3.1"
+  }
+}
