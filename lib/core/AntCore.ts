@@ -4,12 +4,14 @@ import * as FacebookMessanger from 'fb-messenger-bot-api';
 import { CommandParser } from '../utils/CommandParser';
 
 import * as T from './t';
+import * as AntTypes from './types';
 
 
 export class AntCore extends EventEmitter {
 
     public api:    FacebookMessanger.FacebookMessagingAPIClient;
     public cilent: FacebookMessanger.FacebookProfileAPIClient;
+    public Types = AntTypes;
 
     private token: string;
     private config: T.AntMessengerConfig;
@@ -44,7 +46,7 @@ export class AntCore extends EventEmitter {
         return this.config.setStatus(id, status);
     }
 
-    private checkStatus(id: string, type: T.AntListenerType, data: any, extra?: any) {
+    private checkStatus(id: string, type: T.AntListenerType, data: any, extra?: any) { 
         if (type === 'text_message') {
             const text: string = data;
             const command = text.indexOf('?') !== -1 ? text.slice(0, text.indexOf('?')) : text;
@@ -70,21 +72,6 @@ export class AntCore extends EventEmitter {
                 }
             }
         }).catch((err: Error) => this.onError(id, err));
-    }
-
-    private checkStatusPostback(id: string, status: string, data?: any, extra?: any) {
-        const type: T.AntListenerType = 'postback';
-        this.botListeners[type] = this.botListeners[type] || {}; 
-        if (Object.keys(this.botListeners[type]).includes(status)) {
-            return this.botListeners[type][status](id, data, extra);
-        } else {
-            for (let i in Object.keys(this.botListeners[type])) {
-                const listener = Object.keys(this.botListeners[type])[i];
-                if (this.isMask(listener) && this.isMatch(status, listener)) {
-                    return this.botListeners[type][listener](id, data, this.isMatch(status, listener));
-                }
-            }
-        }
     }
 
     private isMask(mask: String): Boolean {
@@ -148,7 +135,7 @@ export class AntCore extends EventEmitter {
                 return this.checkStatus(f.sender.id, 'text_message', '/start');
             }
             if (f.postback) {
-                return this.checkStatusPostback(f.sender.id, f.postback.payload);
+                return this.checkStatus(f.sender.id, 'postback', f.postback.payload);
             }
             if (f.message && f.message.attachments) {
                 const attachments: (FacebookMessanger.FacebookMessagePayloadAttachments | 

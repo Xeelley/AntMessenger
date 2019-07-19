@@ -2,9 +2,11 @@
 import { EventEmitter } from 'events';
 import * as FacebookMessanger from 'fb-messenger-bot-api';
 import * as T from './t';
+import * as AntTypes from './types';
 export declare class AntCore extends EventEmitter {
     api: FacebookMessanger.FacebookMessagingAPIClient;
     cilent: FacebookMessanger.FacebookProfileAPIClient;
+    Types: typeof AntTypes;
     private token;
     private config;
     protected botListeners: T.Listeners;
@@ -13,11 +15,10 @@ export declare class AntCore extends EventEmitter {
     command(command: string, method: T.CommandCallback): void;
     status(id: string, status: String): Promise<any>;
     private checkStatus;
-    private checkStatusPostback;
     private isMask;
     private isMatch;
     private onError;
     validateServer(req: any, res: any): void;
     parsePayload(data: FacebookMessanger.FacebookMessagePayload): FacebookMessanger.FacebookMessagePayloadMessagingEntry[];
-    inspect(data: FacebookMessanger.FacebookMessagePayload): any;
+    inspect(data: FacebookMessanger.FacebookMessagePayload): void;
 }

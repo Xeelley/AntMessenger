@@ -16,10 +16,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = require("events");
 var FacebookMessanger = require("fb-messenger-bot-api");
 var CommandParser_1 = require("../utils/CommandParser");
+var AntTypes = require("./types");
 var AntCore = (function (_super) {
     __extends(AntCore, _super);
     function AntCore(token, config) {
         var _this = _super.call(this) || this;
+        _this.Types = AntTypes;
         _this.botListeners = {};
         _this.commands = {};
         if (!config.getStatus)
@@ -67,21 +69,6 @@ var AntCore = (function (_super) {
                 }
             }
         }).catch(function (err) { return _this.onError(id, err); });
-    };
-    AntCore.prototype.checkStatusPostback = function (id, status, data, extra) {
-        var type = 'postback';
-        this.botListeners[type] = this.botListeners[type] || {};
-        if (Object.keys(this.botListeners[type]).includes(status)) {
-            return this.botListeners[type][status](id, data, extra);
-        }
-        else {
-            for (var i in Object.keys(this.botListeners[type])) {
-                var listener = Object.keys(this.botListeners[type])[i];
-                if (this.isMask(listener) && this.isMatch(status, listener)) {
-                    return this.botListeners[type][listener](id, data, this.isMatch(status, listener));
-                }
-            }
-        }
     };
     AntCore.prototype.isMask = function (mask) {
         return mask.split(this.config.maskSeparator).includes('*');
@@ -137,7 +124,7 @@ var AntCore = (function (_super) {
                 return this.checkStatus(f_1.sender.id, 'text_message', '/start');
             }
             if (f_1.postback) {
-                return this.checkStatusPostback(f_1.sender.id, f_1.postback.payload);
+                return this.checkStatus(f_1.sender.id, 'postback', f_1.postback.payload);
             }
             if (f_1.message && f_1.message.attachments) {
                 var attachments = f_1.message.attachments;
