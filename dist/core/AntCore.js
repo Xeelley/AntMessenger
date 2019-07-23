@@ -35,6 +35,7 @@ var AntCore = (function (_super) {
         _this.api = new FacebookMessanger.FacebookMessagingAPIClient(token);
         _this.cilent = new FacebookMessanger.FacebookProfileAPIClient(token);
         _this.cilent.setGetStartedAction(_this.config.getStartedToken).catch(function (err) { return _this.emit('error', err); });
+        _this.validateServer = _this.validateServer.bind(_this);
         return _this;
     }
     AntCore.prototype.command = function (command, method) {

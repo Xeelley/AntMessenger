@@ -1,6 +1,6 @@
 {
   "name": "ant-messenger",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "AntMessenger: small but poweful framework for facebook messenger bots.",
   "main": "dist/index.js",
   "scripts": {

@@ -35,6 +35,7 @@ export class AntCore extends EventEmitter {
 
         this.cilent.setGetStartedAction(this.config.getStartedToken).catch((err: Error) => this.emit('error', err));
 
+        this.validateServer = this.validateServer.bind(this);
     }
 
 
