@@ -49,9 +49,10 @@ interface IGenericTemplate {
 }
 
 type ButtonType = 'postback' | 'web_url';
+type QuickReplyType = 'text' | 'location';
 
 
-export function QuickReply(title: string, payload?: string, content_type: string = 'text', 
+export function QuickReply(title: string, payload?: string, content_type: QuickReplyType = 'text', 
 image_url?: string): IQuickReply {
     const res: IQuickReply = {
         title,

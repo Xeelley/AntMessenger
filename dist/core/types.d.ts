@@ -39,7 +39,8 @@ interface IGenericTemplate {
     elements: IGenericElement[];
 }
 declare type ButtonType = 'postback' | 'web_url';
-export declare function QuickReply(title: string, payload?: string, content_type?: string, image_url?: string): IQuickReply;
+declare type QuickReplyType = 'text' | 'location';
+export declare function QuickReply(title: string, payload?: string, content_type?: QuickReplyType, image_url?: string): IQuickReply;
 export declare function Button(title: string, payload?: string, type?: ButtonType, url?: string): IButton;
 export declare function ExtentionButton(title: string, url: string, webview_height_ratio?: string): IExtentionButton;
 export declare function ButtonTemplate(text: string, buttons: IButton[]): IButtonTemplate;
