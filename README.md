@@ -25,6 +25,7 @@ About:
 - [Instalation](#Instalation) 
 - [Basic usage](#Basic-usage) 
 - [Ant anatomy](#Ant-anatomy) 
+- [Deep linking](#deep-linking)
 - [Config](#Config)
 
 
@@ -235,6 +236,22 @@ app.post(webhookUrl, (req, res) => {
     console.log(payload); // parsed API payload
 })
 ```
+
+## Deep linking ##
+Facebook Messenger supports [deep linking](https://developers.facebook.com/docs/messenger-platform/discovery/m-me-links/) so you can create link like:
+```
+http://m.me/<PAGE_NAME>?ref=<REF_PARAM>
+```
+which start user scenario with ref value. You can handle context easily:
+```js
+// Via http://m.me/yourbot?ref=value
+Ant.command('/start', async (id, params) => {
+    console.log(params); // { ref: 'value' }
+    console.log(params.ref) // 'value'
+})
+```
+`Ant.command` listener provide params object as second parameter. It will be empty when user has been connected to bot 
+without deep link.
 
 
 ## Config ##

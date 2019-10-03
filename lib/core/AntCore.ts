@@ -135,6 +135,9 @@ export class AntCore extends EventEmitter {
             if (f.postback && f.postback.payload && f.postback.payload === this.config.getStartedToken) {
                 return this.checkStatus(f.sender.id, 'text_message', '/start');
             }
+            if (f.referral && f.referral.ref && f.referral.source === 'SHORTLINK') {
+                return this.checkStatus(f.sender.id, 'text_message', '/start?ref=' + f.referral.ref);
+            }
             if (f.postback) {
                 return this.checkStatus(f.sender.id, 'postback', f.postback.payload);
             }

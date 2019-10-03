@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { EventEmitter } from 'events';
 import * as FacebookMessanger from 'fb-messenger-bot-api';
 import * as T from './t';

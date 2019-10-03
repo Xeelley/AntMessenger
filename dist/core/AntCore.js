@@ -1,89 +1,73 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var events_1 = require("events");
-var FacebookMessanger = require("fb-messenger-bot-api");
-var CommandParser_1 = require("../utils/CommandParser");
-var AntTypes = require("./types");
-var AntCore = (function (_super) {
-    __extends(AntCore, _super);
-    function AntCore(token, config) {
-        var _this = _super.call(this) || this;
-        _this.Types = AntTypes;
-        _this.botListeners = {};
-        _this.commands = {};
+const events_1 = require("events");
+const FacebookMessanger = require("fb-messenger-bot-api");
+const CommandParser_1 = require("../utils/CommandParser");
+const AntTypes = require("./types");
+class AntCore extends events_1.EventEmitter {
+    constructor(token, config) {
+        super();
+        this.Types = AntTypes;
+        this.botListeners = {};
+        this.commands = {};
         if (!config.getStatus)
             throw new Error('Ant: config.getStatus not provided! This field is mandatory.');
         if (!config.setStatus)
             throw new Error('Ant: config.setStatus not provided! This field is mandatory.');
         config.maskSeparator = config.maskSeparator || ':';
         config.getStartedToken = config.getStartedToken || 'GET_STARTED';
-        _this.config = config;
-        _this.token = token;
-        _this.api = new FacebookMessanger.FacebookMessagingAPIClient(token);
-        _this.cilent = new FacebookMessanger.FacebookProfileAPIClient(token);
-        _this.cilent.setGetStartedAction(_this.config.getStartedToken).catch(function (err) { return _this.emit('error', err); });
-        _this.validateServer = _this.validateServer.bind(_this);
-        return _this;
+        this.config = config;
+        this.token = token;
+        this.api = new FacebookMessanger.FacebookMessagingAPIClient(token);
+        this.cilent = new FacebookMessanger.FacebookProfileAPIClient(token);
+        this.cilent.setGetStartedAction(this.config.getStartedToken).catch((err) => this.emit('error', err));
+        this.validateServer = this.validateServer.bind(this);
     }
-    AntCore.prototype.command = function (command, method) {
+    command(command, method) {
         this.commands[command] = method;
-    };
-    AntCore.prototype.status = function (id, status) {
+    }
+    status(id, status) {
         return this.config.setStatus(id, status);
-    };
-    AntCore.prototype.checkStatus = function (id, type, data, extra) {
-        var _this = this;
+    }
+    checkStatus(id, type, data, extra) {
         if (type === 'text_message') {
-            var text = data;
-            var command = text.indexOf('?') !== -1 ? text.slice(0, text.indexOf('?')) : text;
+            const text = data;
+            const command = text.indexOf('?') !== -1 ? text.slice(0, text.indexOf('?')) : text;
             if (Object.keys(this.commands).includes(command)) {
                 this.commands[command](id, CommandParser_1.CommandParser.parse(text));
                 return;
             }
         }
-        this.config.getStatus(id).then(function (status) {
+        this.config.getStatus(id).then(status => {
             if (!status)
                 return;
-            _this.botListeners[type] = _this.botListeners[type] || {};
-            if (Object.keys(_this.botListeners[type]).includes(status)) {
-                return _this.botListeners[type][status](id, data, extra);
+            this.botListeners[type] = this.botListeners[type] || {};
+            if (Object.keys(this.botListeners[type]).includes(status)) {
+                return this.botListeners[type][status](id, data, extra);
             }
             else {
-                for (var i in Object.keys(_this.botListeners[type])) {
-                    var listener = Object.keys(_this.botListeners[type])[i];
-                    if (_this.isMask(listener) && _this.isMatch(status, listener)) {
-                        return _this.botListeners[type][listener](id, data, _this.isMatch(status, listener));
+                for (let i in Object.keys(this.botListeners[type])) {
+                    const listener = Object.keys(this.botListeners[type])[i];
+                    if (this.isMask(listener) && this.isMatch(status, listener)) {
+                        return this.botListeners[type][listener](id, data, this.isMatch(status, listener));
                     }
                 }
             }
-        }).catch(function (err) { return _this.onError(id, err); });
-    };
-    AntCore.prototype.isMask = function (mask) {
+        }).catch((err) => this.onError(id, err));
+    }
+    isMask(mask) {
         return mask.split(this.config.maskSeparator).includes('*');
-    };
-    AntCore.prototype.isMatch = function (status, mask) {
+    }
+    isMatch(status, mask) {
         if (mask === '*')
             return status;
-        var statusLevels = status.split(this.config.maskSeparator);
-        var maskLevels = mask.split(this.config.maskSeparator);
-        var maskMatch;
+        const statusLevels = status.split(this.config.maskSeparator);
+        const maskLevels = mask.split(this.config.maskSeparator);
+        let maskMatch;
         if (maskLevels.length !== statusLevels.length) {
             return null;
         }
-        for (var i = 0; i < maskLevels.length; i++) {
+        for (let i = 0; i < maskLevels.length; i++) {
             if (maskLevels[i] !== '*') {
                 if (maskLevels[i] !== statusLevels[i]) {
                     return null;
@@ -94,53 +78,55 @@ var AntCore = (function (_super) {
             }
         }
         return maskMatch;
-    };
-    AntCore.prototype.onError = function (id, err) {
+    }
+    onError(id, err) {
         this.emit('error', Object.assign(err, { sender_id: id }));
-    };
-    AntCore.prototype.validateServer = function (req, res) {
+    }
+    validateServer(req, res) {
         FacebookMessanger.ValidateWebhook.validateServer(req, res, this.token);
-    };
-    AntCore.prototype.parsePayload = function (data) {
+    }
+    parsePayload(data) {
         return FacebookMessanger.FacebookMessageParser.parsePayload(data);
-    };
-    AntCore.prototype.inspect = function (data) {
-        var _this = this;
-        var payload = this.parsePayload(data);
+    }
+    inspect(data) {
+        const payload = this.parsePayload(data);
         if (Array.isArray(payload)) {
-            var f_1 = payload[0];
-            if (f_1.message && f_1.message.text && !f_1.message.quick_reply) {
-                return this.checkStatus(f_1.sender.id, 'text_message', f_1.message.text, f_1);
+            const f = payload[0];
+            if (f.message && f.message.text && !f.message.quick_reply) {
+                return this.checkStatus(f.sender.id, 'text_message', f.message.text, f);
             }
-            if (f_1.message && f_1.message.is_echo) {
-                this.checkStatus(f_1.recipient.id, 'echo', f_1);
+            if (f.message && f.message.is_echo) {
+                this.checkStatus(f.recipient.id, 'echo', f);
             }
-            if (f_1.message && f_1.message.text && f_1.message.quick_reply) {
-                return this.checkStatus(f_1.sender.id, 'quick_reply', f_1.message.text, f_1.message.quick_reply);
+            if (f.message && f.message.text && f.message.quick_reply) {
+                return this.checkStatus(f.sender.id, 'quick_reply', f.message.text, f.message.quick_reply);
             }
-            if (f_1.delivery) {
-                return this.checkStatus(f_1.sender.id, 'delivery', f_1.delivery);
+            if (f.delivery) {
+                return this.checkStatus(f.sender.id, 'delivery', f.delivery);
             }
-            if (f_1.postback && f_1.postback.payload && f_1.postback.payload === this.config.getStartedToken) {
-                return this.checkStatus(f_1.sender.id, 'text_message', '/start');
+            if (f.postback && f.postback.payload && f.postback.payload === this.config.getStartedToken) {
+                return this.checkStatus(f.sender.id, 'text_message', '/start');
             }
-            if (f_1.postback) {
-                return this.checkStatus(f_1.sender.id, 'postback', f_1.postback.payload);
+            if (f.referral && f.referral.ref && f.referral.source === 'SHORTLINK') {
+                return this.checkStatus(f.sender.id, 'text_message', '/start?ref=' + f.referral.ref);
             }
-            if (f_1.message && f_1.message.attachments) {
-                var attachments = f_1.message.attachments;
-                attachments.forEach(function (attachment) {
+            if (f.postback) {
+                return this.checkStatus(f.sender.id, 'postback', f.postback.payload);
+            }
+            if (f.message && f.message.attachments) {
+                const attachments = f.message.attachments;
+                attachments.forEach((attachment) => {
                     if (attachment.type === 'image' && attachment.payload.sticker_id) {
-                        _this.checkStatus(f_1.sender.id, 'sticker', attachment.payload);
+                        this.checkStatus(f.sender.id, 'sticker', attachment.payload);
                     }
                     if (attachment.type === 'image' && !attachment.payload.sticker_id) {
-                        _this.checkStatus(f_1.sender.id, 'image', attachment.payload);
+                        this.checkStatus(f.sender.id, 'image', attachment.payload);
                     }
                     if (attachment.type === 'audio') {
-                        _this.checkStatus(f_1.sender.id, 'audio', attachment.payload);
+                        this.checkStatus(f.sender.id, 'audio', attachment.payload);
                     }
                     if (attachment.type === 'location') {
-                        _this.checkStatus(f_1.sender.id, 'location', {
+                        this.checkStatus(f.sender.id, 'location', {
                             title: attachment.title,
                             url: attachment.url,
                             latitude: attachment.payload.coordinates.lat,
@@ -151,7 +137,6 @@ var AntCore = (function (_super) {
                 return;
             }
         }
-    };
-    return AntCore;
-}(events_1.EventEmitter));
+    }
+}
 exports.AntCore = AntCore;
