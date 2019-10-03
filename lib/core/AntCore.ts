@@ -33,6 +33,7 @@ export class AntCore extends EventEmitter {
         this.api    = new FacebookMessanger.FacebookMessagingAPIClient(token);
         this.cilent = new FacebookMessanger.FacebookProfileAPIClient(token);
 
+        // @ts-ignore
         this.cilent.setGetStartedAction(this.config.getStartedToken).catch((err: Error) => this.emit('error', err));
 
         this.validateServer = this.validateServer.bind(this);
