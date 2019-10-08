@@ -197,15 +197,15 @@ const GenericTemplate = Ant.Types.GenericTemplate;
 const GenericElement  = Ant.Types.GenericElement;
 const DefaultAction   = Ant.Types.DefaultAction;
 const Button          = Ant.Types.Button;
-await Ant.api.sendTemplateMessage(id, new GenericTemplate([
-        new GenericElement('Javascript', js_image, 'Reddit: r/javasript', 
-            new DefaultAction('https://www.reddit.com/r/javascript/'), [
-                new Button('🔎 To r/javasript', 'site', 'web_url', 'https://www.reddit.com/r/javascript/')
+await Ant.api.sendTemplateMessage(id, GenericTemplate([
+        GenericElement('Javascript', js_image, 'Reddit: r/javasript', 
+            DefaultAction('https://www.reddit.com/r/javascript/'), [
+                Button('🔎 To r/javasript', 'site', 'web_url', 'https://www.reddit.com/r/javascript/')
             ]
         ),
-        new GenericElement('Typescript', ts_image, 'Reddit: r/typescript', 
-            new DefaultAction('https://www.reddit.com/r/typescript/'), [
-                new Button('🔎 To r/typescript', 'site', 'web_url', 'https://www.reddit.com/r/typescript/')
+        GenericElement('Typescript', ts_image, 'Reddit: r/typescript', 
+            DefaultAction('https://www.reddit.com/r/typescript/'), [
+                Button('🔎 To r/typescript', 'site', 'web_url', 'https://www.reddit.com/r/typescript/')
             ]
         )
     ]));
