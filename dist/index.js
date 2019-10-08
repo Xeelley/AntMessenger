@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const AntCore_1 = require("./core/AntCore");
-class AntMessenger extends AntCore_1.AntCore {
+const AntApi_1 = require("./core/AntApi");
+class AntMessenger extends AntApi_1.AntApi {
     constructor(token, config) {
         super(token, config);
     }

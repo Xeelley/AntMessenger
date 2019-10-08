@@ -1,10 +1,10 @@
 import * as T from './core/t';
-import { AntCore } from './core/AntCore';
+import { AntApi } from './core/AntApi';
 
 import * as FacebookMessanger from 'fb-messenger-bot-api';
 
 
-export class AntMessenger extends AntCore {
+export class AntMessenger extends AntApi {
 
     constructor(token: string, config: T.AntMessengerConfig) {
         super(token, config);

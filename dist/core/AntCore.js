@@ -18,7 +18,7 @@ class AntCore extends events_1.EventEmitter {
         config.getStartedToken = config.getStartedToken || 'GET_STARTED';
         this.config = config;
         this.token = token;
-        this.api = new FacebookMessanger.FacebookMessagingAPIClient(token);
+        this._api = new FacebookMessanger.FacebookMessagingAPIClient(token);
         this.cilent = new FacebookMessanger.FacebookProfileAPIClient(token);
         this.cilent.setGetStartedAction(this.config.getStartedToken).catch((err) => this.emit('error', err));
         this.validateServer = this.validateServer.bind(this);

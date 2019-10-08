@@ -1,7 +1,7 @@
 import * as T from './core/t';
-import { AntCore } from './core/AntCore';
+import { AntApi } from './core/AntApi';
 import * as FacebookMessanger from 'fb-messenger-bot-api';
-export declare class AntMessenger extends AntCore {
+export declare class AntMessenger extends AntApi {
     constructor(token: string, config: T.AntMessengerConfig);
     add(type: 'text_message', status: string, listener: (id: string, text: string, payload: FacebookMessanger.FacebookMessagePayloadMessagingEntry) => any): void;
     add(type: 'echo', status: string, listener: (id: string, payload: FacebookMessanger.FacebookMessagePayloadMessagingEntry) => any): void;

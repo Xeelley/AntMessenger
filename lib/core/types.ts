@@ -1,21 +1,21 @@
 const GENERIC_ELEMENT_TEXT_COMPONENT_LENGTH_LIMIT = 80;
 
 
-interface IQuickReply {
+export interface IQuickReply {
     title: string;
     payload?: string;
     content_type?: string;
     image_url?: string;
 }
 
-interface IButton {
+export interface IButton {
     title: string;
     payload?: string;
     type?: string;
     url?: string;
 }
 
-interface IExtentionButton {
+export interface IExtentionButton {
     title: string;
     url: string;
     type: string;
@@ -23,19 +23,19 @@ interface IExtentionButton {
     messenger_extensions: boolean;
 }
 
-interface IButtonTemplate {
+export interface IButtonTemplate {
     template_type: string;
     text: string;
     buttons: IButton[];
 }
 
-interface IDefaultAction {
+export interface IDefaultAction {
     url: string;
     type: string;
     webview_height_ratio: string;
 }
 
-interface IGenericElement {
+export interface IGenericElement {
     title: string;
     image_url: string;
     subtitle: string;
@@ -43,7 +43,7 @@ interface IGenericElement {
     buttons: IButton[];
 }
 
-interface IGenericTemplate {
+export interface IGenericTemplate {
     template_type: string;
     elements: IGenericElement[];
 }

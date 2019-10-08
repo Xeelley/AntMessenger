@@ -9,7 +9,7 @@ import * as AntTypes from './types';
 
 export class AntCore extends EventEmitter {
 
-    public api:    FacebookMessanger.FacebookMessagingAPIClient;
+    protected _api: FacebookMessanger.FacebookMessagingAPIClient;
     public cilent: FacebookMessanger.FacebookProfileAPIClient;
     public Types = AntTypes;
 
@@ -30,7 +30,7 @@ export class AntCore extends EventEmitter {
 
         this.token = token;
 
-        this.api    = new FacebookMessanger.FacebookMessagingAPIClient(token);
+        this._api   = new FacebookMessanger.FacebookMessagingAPIClient(token);
         this.cilent = new FacebookMessanger.FacebookProfileAPIClient(token);
 
         // @ts-ignore

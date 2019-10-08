@@ -1,6 +1,6 @@
 {
   "name": "ant-messenger",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "AntMessenger: small but poweful framework for facebook messenger bots.",
   "main": "dist/index.js",
   "scripts": {
@@ -28,8 +28,13 @@
   },
   "homepage": "https://github.com/Xeelley/AntMessenger#readme",
   "dependencies": {
+    "@types/node": "^12.6.8",
+    "fb-messenger-bot-api": "^4.3.1"
+  },
+  "devDependencies": {
     "body-parser": "^1.19.0",
-    "fb-messenger-bot-api": "^4.3.1",
-    "@types/node": "^12.6.8"
+    "express": "^4.17.1",
+    "@types/body-parser": "^1.17.1",
+    "@types/express": "^4.17.1"
   }
 }

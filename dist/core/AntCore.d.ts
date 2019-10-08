@@ -3,7 +3,7 @@ import * as FacebookMessanger from 'fb-messenger-bot-api';
 import * as T from './t';
 import * as AntTypes from './types';
 export declare class AntCore extends EventEmitter {
-    api: FacebookMessanger.FacebookMessagingAPIClient;
+    protected _api: FacebookMessanger.FacebookMessagingAPIClient;
     cilent: FacebookMessanger.FacebookProfileAPIClient;
     Types: typeof AntTypes;
     private token;
