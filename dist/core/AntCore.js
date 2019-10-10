@@ -86,7 +86,7 @@ class AntCore extends events_1.EventEmitter {
         FacebookMessanger.ValidateWebhook.validateServer(req, res, this.token);
     }
     parsePayload(data) {
-        return FacebookMessanger.FacebookMessageParser.parsePayload(data);
+        return data ? FacebookMessanger.FacebookMessageParser.parsePayload(data) : null;
     }
     inspect(data) {
         const payload = this.parsePayload(data);

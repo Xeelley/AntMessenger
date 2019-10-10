@@ -111,7 +111,7 @@ export class AntCore extends EventEmitter {
     }
 
     public parsePayload(data: FacebookMessanger.FacebookMessagePayload): FacebookMessanger.FacebookMessagePayloadMessagingEntry[] {
-        return FacebookMessanger.FacebookMessageParser.parsePayload(data);
+        return data ? FacebookMessanger.FacebookMessageParser.parsePayload(data) : null;
     }
 
     public inspect(data: FacebookMessanger.FacebookMessagePayload) {
