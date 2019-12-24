@@ -96,7 +96,6 @@ class AntCore extends events_1.EventEmitter {
         const payload = this.parsePayload(data);
         if (Array.isArray(payload)) {
             const f = payload[0];
-            console.log(f, 'u');
             if (f.message && f.message.text && !f.message.quick_reply) {
                 return this.checkStatus(f.sender.id, 'text_message', f.message.text, f);
             }
