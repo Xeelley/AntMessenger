@@ -24,6 +24,10 @@ export interface CommandCallback {
     (id: string, params: { [index: string]: string }): void;
 }
 
+export interface OnStartCallback {
+    (id: string, ref: string): void;
+}
+
 export type AntListenerType = 
 'text_message' | 
 'delivery' | 

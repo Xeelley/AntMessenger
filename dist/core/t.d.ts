@@ -22,6 +22,9 @@ export interface CommandCallback {
         [index: string]: string;
     }): void;
 }
+export interface OnStartCallback {
+    (id: string, ref: string): void;
+}
 export declare type AntListenerType = 'text_message' | 'delivery' | 'quick_reply' | 'postback' | 'image' | 'sticker' | 'audio' | 'location' | 'echo';
 export interface ImagePayload {
     url: string;

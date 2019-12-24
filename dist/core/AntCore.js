@@ -10,6 +10,7 @@ class AntCore extends events_1.EventEmitter {
         this.Types = AntTypes;
         this.botListeners = {};
         this.commands = {};
+        this.onStartListeners = [];
         if (!config.getStatus)
             throw new Error('Ant: config.getStatus not provided! This field is mandatory.');
         if (!config.setStatus)
@@ -28,6 +29,9 @@ class AntCore extends events_1.EventEmitter {
     }
     status(id, status) {
         return this.config.setStatus(id, status);
+    }
+    onStart(callback) {
+        this.onStartListeners.push(callback);
     }
     checkStatus(id, type, data, extra) {
         if (type === 'text_message') {
@@ -92,6 +96,7 @@ class AntCore extends events_1.EventEmitter {
         const payload = this.parsePayload(data);
         if (Array.isArray(payload)) {
             const f = payload[0];
+            console.log(f, 'u');
             if (f.message && f.message.text && !f.message.quick_reply) {
                 return this.checkStatus(f.sender.id, 'text_message', f.message.text, f);
             }
@@ -103,6 +108,10 @@ class AntCore extends events_1.EventEmitter {
             }
             if (f.delivery) {
                 return this.checkStatus(f.sender.id, 'delivery', f.delivery);
+            }
+            if (f.postback && f.postback.referral && f.postback.payload === this.config.getStartedToken
+                && f.postback.referral.source === 'SHORTLINK') {
+                return this.checkStatus(f.sender.id, 'text_message', '/start?ref=' + f.postback.referral.ref);
             }
             if (f.postback && f.postback.payload && f.postback.payload === this.config.getStartedToken) {
                 return this.checkStatus(f.sender.id, 'text_message', '/start');

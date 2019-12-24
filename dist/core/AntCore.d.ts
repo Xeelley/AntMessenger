@@ -10,9 +10,11 @@ export declare class AntCore extends EventEmitter {
     private config;
     protected botListeners: T.Listeners;
     protected commands: T.Commands;
+    protected onStartListeners: T.OnStartCallback[];
     constructor(token: string, config: T.AntMessengerConfig);
     command(command: string, method: T.CommandCallback): void;
     status(id: string, status: String): Promise<any>;
+    private onStart;
     private checkStatus;
     private isMask;
     private isMatch;

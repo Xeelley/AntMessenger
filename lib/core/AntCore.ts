@@ -18,6 +18,7 @@ export class AntCore extends EventEmitter {
 
     protected botListeners: T.Listeners = {};
     protected commands: T.Commands = {};
+    protected onStartListeners: T.OnStartCallback[] = [];
 
     constructor(token: string, config: T.AntMessengerConfig) {
         super();
@@ -46,6 +47,14 @@ export class AntCore extends EventEmitter {
 
     public status(id: string, status: String): Promise<any> {
         return this.config.setStatus(id, status);
+    }
+
+    /**
+     * Unreleased yet
+     * @param callback 
+     */
+    private onStart(callback: T.OnStartCallback) {
+        this.onStartListeners.push(callback);
     }
 
     private checkStatus(id: string, type: T.AntListenerType, data: any, extra?: any) { 
@@ -132,6 +141,10 @@ export class AntCore extends EventEmitter {
             }
             if (f.delivery) {
                 return this.checkStatus(f.sender.id, 'delivery', f.delivery);
+            }
+            if (f.postback && f.postback.referral && f.postback.payload === this.config.getStartedToken 
+            && f.postback.referral.source === 'SHORTLINK') {
+                return this.checkStatus(f.sender.id, 'text_message', '/start?ref=' + f.postback.referral.ref);
             }
             if (f.postback && f.postback.payload && f.postback.payload === this.config.getStartedToken) {
                 return this.checkStatus(f.sender.id, 'text_message', '/start');
