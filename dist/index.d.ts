@@ -12,6 +12,7 @@ export declare class AntMessenger extends AntApi {
     add(type: 'sticker', status: string, listener: (id: string, sticker: T.StickerPayload, mask?: string) => any): void;
     add(type: 'image', status: string, listener: (id: string, image: T.ImagePayload, mask?: string) => any): void;
     add(type: 'audio', status: string, listener: (id: string, audio: T.AudioPayload, mask?: string) => any): void;
+    add(type: 'file', status: string, listener: (id: string, file: T.FilePayload, mask?: string) => any): void;
     add(type: 'location', status: string, listener: (id: string, location: T.LocationPayload, mask?: string) => any): void;
     add(type: 'postback', status: string, listener: (id: string, payload: string) => any, mask?: string): void;
 }

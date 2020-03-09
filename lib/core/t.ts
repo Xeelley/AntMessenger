@@ -36,6 +36,7 @@ export type AntListenerType =
 'image' |
 'sticker' |
 'audio' |
+'file' |
 'location' |
 'echo'; 
 
@@ -49,6 +50,10 @@ export interface StickerPayload {
 }
 
 export interface AudioPayload {
+    url: string;
+}
+
+export interface FilePayload {
     url: string;
 }
 

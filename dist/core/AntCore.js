@@ -133,6 +133,9 @@ class AntCore extends events_1.EventEmitter {
                     if (attachment.type === 'audio') {
                         this.checkStatus(f.sender.id, 'audio', attachment.payload);
                     }
+                    if (attachment.type === 'file') {
+                        this.checkStatus(f.sender.id, 'file', attachment.payload);
+                    }
                     if (attachment.type === 'location') {
                         this.checkStatus(f.sender.id, 'location', {
                             title: attachment.title,

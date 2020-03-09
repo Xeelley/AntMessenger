@@ -25,7 +25,7 @@ export interface CommandCallback {
 export interface OnStartCallback {
     (id: string, ref: string): void;
 }
-export declare type AntListenerType = 'text_message' | 'delivery' | 'quick_reply' | 'postback' | 'image' | 'sticker' | 'audio' | 'location' | 'echo';
+export declare type AntListenerType = 'text_message' | 'delivery' | 'quick_reply' | 'postback' | 'image' | 'sticker' | 'audio' | 'file' | 'location' | 'echo';
 export interface ImagePayload {
     url: string;
 }
@@ -34,6 +34,9 @@ export interface StickerPayload {
     sticker_id: number;
 }
 export interface AudioPayload {
+    url: string;
+}
+export interface FilePayload {
     url: string;
 }
 export interface LocationPayload {

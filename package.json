@@ -1,10 +1,9 @@
 {
   "name": "ant-messenger",
-  "version": "0.0.8b",
+  "version": "0.0.8c",
   "description": "AntMessenger: small but poweful framework for facebook messenger bots.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
   },
   "engines": {

@@ -67,7 +67,7 @@ export class AntCore extends EventEmitter {
                 return;
             }
         }
-        
+   
         this.config.getStatus(id).then(status => {
             if (!status) return;
 
@@ -169,6 +169,9 @@ export class AntCore extends EventEmitter {
                     }
                     if (attachment.type === 'audio') {
                         this.checkStatus(f.sender.id, 'audio', attachment.payload);
+                    }
+                    if (attachment.type === 'file') {
+                        this.checkStatus(f.sender.id, 'file', attachment.payload);
                     }
                     if (attachment.type === 'location') {
                         this.checkStatus(f.sender.id, 'location', {
